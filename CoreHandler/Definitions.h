@@ -11,8 +11,12 @@
 enum ApplyableSystem
 {
     physics,
+    lighting
     
 };
+
+static int TESTING = 1;
+static int DEBUG = 1;
 
 #endif	/* DEFINITIONS_H */
 

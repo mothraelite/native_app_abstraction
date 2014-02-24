@@ -13,3 +13,6 @@ Controller::Controller() {
 Controller::~Controller() {
 }
 
+void Controller::init(){
+    
+}
