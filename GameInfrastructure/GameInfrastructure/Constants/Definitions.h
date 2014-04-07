@@ -10,6 +10,13 @@
 
 #import <thread>
 
+extern "C"
+{
+    #include <lua.h>
+    #include <lualib.h>
+    #include <lauxlib.h>
+}
+
 enum ApplyableSystem
 {
     physics,
@@ -24,8 +31,7 @@ enum ObjectType
     image_actor
 };
 
-static std::thread* update_thread;
-static std::thread* input_thread;
+static lua_State* lua_state;
 
 static int screen_width = 800;
 static int screen_height = 600;

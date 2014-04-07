@@ -160,6 +160,36 @@ void idle()
 }
 
 int main(int argc, char** argv) {
+    //init LUA
+    lua_state = luaL_newstate();
+    luaL_openlibs(lua_state);
+    
+    //load and compile and run the lua file!
+    while(true)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    luaL_dofile(lua_state, "/Users/navidmilani/Desktop/native_app_abstraction/GameInfrastructure/helloworld.lua");
+
+    //let's call its function :3
+        //load up the global func
+    lua_getglobal(lua_state, "luastr");
+    
+        //arguements
+    lua_pushstring(lua_state, "Hello from c to lua and back!\n");
+    
+        //call func: state, argument count, return count
+    lua_call(lua_state, 1, 1);
+    
+    const char* str_from_lua = lua_tostring(lua_state, -1);
+    
+        //pop off stack
+    lua_pop(lua_state,1);
+    
+    //print!
+    printf(str_from_lua);
+    }
+    
+    //init RAND
     srand(time(0));
     
     // init GLUT and create Window
@@ -256,12 +286,12 @@ int main(int argc, char** argv) {
     controlledActor = actor;
     actor->depth = 2;
 
-    Texture* img = loadPngImage("/Users/navidmilani/Desktop/png_file.png");//loadPngImage("/Users/navidmilani/Desktop/other_png.png");
-    for(int i = 0; i < 80; ++i)
+    Texture* img = loadPngImage("/Users/navidmilani/Desktop/other_png.png");//loadPngImage("/Users/navidmilani/Desktop/other_png.png");
+    for(int i = 0; i < 1; ++i)
     {
         ImageActor* temp = new ImageActor(img);
-        temp->setWidth(50);
-        temp->setHeight(20);
+        temp->setWidth(100);
+        temp->setHeight(80);
         temp->setPosition(random()%400, random()%400);
         
         temp->depth = 1;
@@ -276,13 +306,15 @@ int main(int argc, char** argv) {
     bg->setWidth(800);
     bg->setHeight(600);
     bg->depth = 100;
-    //s->addActor(bg);
+    s->addActor(bg);
     
     //setup manager!
     manager->addScene(s);
     
 	// enter GLUT event processing cycle
 	glutMainLoop();
+    
+    lua_close(lua_state);
     
     return 0;
 }
