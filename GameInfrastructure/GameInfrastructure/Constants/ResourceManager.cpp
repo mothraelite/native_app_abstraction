@@ -23,9 +23,12 @@ void ResourceManager::init()
 {
     if(TESTING)
     {
-        //putTexture("null",loadPngImage("/Users/navidmilani/Desktop/png_file.png"));
-        putTexture("flowers",loadPngImage("/Users/navidmilani/Desktop/png_file.png"));
-        putTexture("notes",loadPngImage("/Users/navidmilani/Desktop/test_notes.png"));
+        std::string dir = "/Users/navidmilani/Desktop/native_app_abstraction/Images";
+        putTexture("wall",loadPngImage(dir+"/Environment/wall.png"));
+        putTexture("dresser", loadPngImage(dir+"/Characters/dresser.png"));
+        putTexture("start_button", loadPngImage(dir+"/Buttons/continue_btn.png"));
+        putTexture("logo", loadPngImage(dir+"/mm_logo.png"));
+        putTexture("haze", loadPngImage(dir+"/haze.png"));
     }
     //iterate through all assets in asset folder
         //append all of them to list

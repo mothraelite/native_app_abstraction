@@ -84,21 +84,6 @@ Scene* SceneManager::current_scene = NULL;
 
 void SceneManager::update()
 {
-    if(lua_state)
-    {
-        //grab and call update
-        luaL_dofile(lua_state, "/Users/navidmilani/Desktop/native_app_abstraction/GameInfrastructure/main.lua");
-
-        //load up the global func
-        lua_getglobal(lua_state, "update");
-        
-        //call func: state, argument count, return count
-        lua_call(lua_state, 0, 0);
-        
-            //pop off stack
-        lua_pop(lua_state,1);
-    }
-    
     if(SceneManager::current_scene)
         SceneManager::current_scene->update();
 }

@@ -26,14 +26,14 @@ png_uint_32 powerOfTwo( png_uint_32 num )
     return num;
 }
 
-Texture* loadPngImage(char* name) {
+Texture* loadPngImage(std::string name) {
     png_structp png_ptr;
     png_infop info_ptr;
     unsigned int sig_read = 0;
     int color_type, interlace_type;
     FILE *fp;
     
-    if ((fp = fopen(name, "rb")) == NULL)
+    if ((fp = fopen(name.c_str(), "rb")) == NULL)
         return NULL;
     
     png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING,

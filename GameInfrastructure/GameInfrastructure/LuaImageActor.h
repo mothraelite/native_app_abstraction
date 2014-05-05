@@ -19,7 +19,7 @@ static int createActor(lua_State *l)
     
     if(arg_count == 1)
     {
-        img_name = luaL_checkstring(l,2);
+        img_name = luaL_checkstring(l,1);
     }
     
     //create pointer space for lua for our c++ object
@@ -161,6 +161,10 @@ static int appendFunctionToEvent(lua_State* l)
     actor->appendFunctionToEvent(event,
     [func_ref]()
     {
+        luaL_loadfile(lua_state, "/Users/navidmilani/Desktop/native_app_abstraction/GameInfrastructure/main.lua");
+        
+        lua_pcall(lua_state, 0, LUA_MULTRET, 0);
+        
         //get natural lua func from index
         lua_rawgeti(lua_state, LUA_REGISTRYINDEX, func_ref);
         
@@ -214,6 +218,13 @@ static int setDestination(lua_State* l)
     return 0;
 }
 
+static int setDepth(lua_State* l)
+{
+    ImageActor* actor = checkLuaImageActor(l, 1);
+    actor->depth = luaL_checknumber(l, 2);
+    return 0;
+}
+
 static int getDestination(lua_State* l)
 {
     ImageActor* actor = checkLuaImageActor(l, 1);
@@ -245,6 +256,8 @@ static const luaL_Reg exposed_funcs[] = {
     
     {"setSize", setSize},
     {"getSize", getSize},
+    
+    {"setDepth", setDepth},
     
     {"setColors", setColors},
     {"getColors", getColors},

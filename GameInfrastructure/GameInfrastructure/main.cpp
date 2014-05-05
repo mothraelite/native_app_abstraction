@@ -113,6 +113,8 @@ void renderScene()
 {
     if(manager)
     {
+        luaL_loadfile(lua_state, "/Users/navidmilani/Desktop/native_app_abstraction/GameInfrastructure/main.lua");
+        lua_pcall(lua_state, 0, LUA_MULTRET, 0);
         manager->update();
         manager->render();
     }else{
@@ -125,9 +127,9 @@ void renderScene()
             manager->addScene(s);
             
             //setup scene!
-            luaL_dofile(lua_state, "/Users/navidmilani/Desktop/native_app_abstraction/GameInfrastructure/main.lua");
+            luaL_loadfile(lua_state, "/Users/navidmilani/Desktop/native_app_abstraction/GameInfrastructure/main.lua");
             
-            
+            lua_pcall(lua_state, 0, LUA_MULTRET, 0);
             
             //load up the global func
             lua_getglobal(lua_state, "init");

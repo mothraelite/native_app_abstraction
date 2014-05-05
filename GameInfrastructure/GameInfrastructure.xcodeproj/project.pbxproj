@@ -28,7 +28,7 @@
 		AE7E321E18BE3F2E00B2E3A9 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
+			dstPath = /usr/share/man/man1;
 			dstSubfolderSpec = 0;
 			files = (
 				AE7E322618BE3F2E00B2E3A9 /* GameInfrastructure.1 in CopyFiles */,
@@ -53,6 +53,7 @@
 		AE191A9918F3BE760077B55D /* FPSKeeper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FPSKeeper.cpp; sourceTree = "<group>"; };
 		AE191A9A18F3BE760077B55D /* FPSKeeper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPSKeeper.h; sourceTree = "<group>"; };
 		AE317B32190EFC7500B06286 /* LuaImageActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LuaImageActor.h; sourceTree = "<group>"; };
+		AE317B3A1917D9C900B06286 /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
 		AE6D672F18DA187600CB99BB /* GameMath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameMath.h; sourceTree = "<group>"; };
 		AE7E322018BE3F2E00B2E3A9 /* GameInfrastructure */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GameInfrastructure; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE7E322518BE3F2E00B2E3A9 /* GameInfrastructure.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = GameInfrastructure.1; sourceTree = "<group>"; };
@@ -151,6 +152,7 @@
 		AE7E321718BE3F2E00B2E3A9 = {
 			isa = PBXGroup;
 			children = (
+				AE317B3A1917D9C900B06286 /* Images */,
 				AE191A8D18F249AD0077B55D /* liblua52.dylib */,
 				AE191A8B18F249130077B55D /* liblua52.a */,
 				AE7E322218BE3F2E00B2E3A9 /* GameInfrastructure */,
