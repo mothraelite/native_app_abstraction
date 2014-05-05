@@ -55,13 +55,6 @@ void Actor::initEvents()
     event_handlers->insert(event_pair("onDestroyed",0));
     event_handlers->insert(event_pair("onRender",0));
     event_handlers->insert(event_pair("beforeRender",0));
-   
-    if(TESTING)
-    {
-        //setTimedEventWithCompletionBlock("death", random()%300,  [&]{this->alive = false;});
-        appendFunctionToEvent("onAddedToScene", []{std::cout<<"I was added to a scene\n";});
-        appendFunctionToEvent("onDestroyed",[]{std::cout<<"I am now destroyed\n";});
-    }
 }
 
 void Actor::setTimedEventWithCompletionBlock(std::string name, int how_long, std::function<void(void)> func)
@@ -74,7 +67,7 @@ void Actor::setTimedEventWithCompletionBlock(std::string name, int how_long, std
     }
     
     std::map<std::string,int>::iterator it = alarm_counters->find(name);
-    if(it == alarm_counters->end())
+    if(it == alarm_counters->end() || name.compare( "fromLua" ))
     {
         alarm_counters->insert(si_pair(name,how_long));
         alarm_handlers->insert(sf_pair(name,func));

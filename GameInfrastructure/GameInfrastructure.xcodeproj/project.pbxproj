@@ -11,6 +11,7 @@
 		AE191A8318EB8F060077B55D /* PhysicsBody.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE191A8118EB8F060077B55D /* PhysicsBody.cpp */; };
 		AE191A8618EB8F260077B55D /* CollisionBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE191A8418EB8F260077B55D /* CollisionBox.cpp */; };
 		AE191A8A18EDC7460077B55D /* CollisionDetection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE191A8818EDC7460077B55D /* CollisionDetection.cpp */; };
+		AE191A9B18F3BE760077B55D /* FPSKeeper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE191A9918F3BE760077B55D /* FPSKeeper.cpp */; };
 		AE7E322618BE3F2E00B2E3A9 /* GameInfrastructure.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = AE7E322518BE3F2E00B2E3A9 /* GameInfrastructure.1 */; };
 		AE7E322D18BE3F4300B2E3A9 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE7E322C18BE3F4300B2E3A9 /* GLUT.framework */; };
 		AE7E322F18BE3F5C00B2E3A9 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE7E322E18BE3F5C00B2E3A9 /* OpenGL.framework */; };
@@ -49,6 +50,9 @@
 		AE191A8918EDC7460077B55D /* CollisionDetection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollisionDetection.h; sourceTree = "<group>"; };
 		AE191A8B18F249130077B55D /* liblua52.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblua52.a; path = lua/liblua52.a; sourceTree = "<group>"; };
 		AE191A8D18F249AD0077B55D /* liblua52.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liblua52.dylib; path = lua/liblua52.dylib; sourceTree = "<group>"; };
+		AE191A9918F3BE760077B55D /* FPSKeeper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FPSKeeper.cpp; sourceTree = "<group>"; };
+		AE191A9A18F3BE760077B55D /* FPSKeeper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPSKeeper.h; sourceTree = "<group>"; };
+		AE317B32190EFC7500B06286 /* LuaImageActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LuaImageActor.h; sourceTree = "<group>"; };
 		AE6D672F18DA187600CB99BB /* GameMath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameMath.h; sourceTree = "<group>"; };
 		AE7E322018BE3F2E00B2E3A9 /* GameInfrastructure */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GameInfrastructure; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE7E322518BE3F2E00B2E3A9 /* GameInfrastructure.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = GameInfrastructure.1; sourceTree = "<group>"; };
@@ -87,6 +91,8 @@
 		AE0C04E118D68B84008B6A43 /* Test */ = {
 			isa = PBXGroup;
 			children = (
+				AE191A9918F3BE760077B55D /* FPSKeeper.cpp */,
+				AE191A9A18F3BE760077B55D /* FPSKeeper.h */,
 			);
 			name = Test;
 			sourceTree = "<group>";
@@ -118,9 +124,25 @@
 			name = CollisionDetection;
 			sourceTree = "<group>";
 		};
+		AE191A9718F3444C0077B55D /* GameActors */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = GameActors;
+			sourceTree = "<group>";
+		};
+		AE191A9818F34F850077B55D /* LuaActorWrappers */ = {
+			isa = PBXGroup;
+			children = (
+				AE317B32190EFC7500B06286 /* LuaImageActor.h */,
+			);
+			name = LuaActorWrappers;
+			sourceTree = "<group>";
+		};
 		AE6D673318DF641000CB99BB /* EngineObjects */ = {
 			isa = PBXGroup;
 			children = (
+				AE191A9818F34F850077B55D /* LuaActorWrappers */,
 				AE8221DF18D66FA500B0F1CD /* Texture.h */,
 			);
 			name = EngineObjects;
@@ -166,6 +188,7 @@
 		AE7E323218BE406F00B2E3A9 /* Actors */ = {
 			isa = PBXGroup;
 			children = (
+				AE191A9718F3444C0077B55D /* GameActors */,
 				AE191A8018EB8EF40077B55D /* Controllers */,
 				AE7E323318BE406F00B2E3A9 /* Controller.cpp */,
 				AE7E323418BE406F00B2E3A9 /* Controller.h */,
@@ -261,6 +284,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE191A9B18F3BE760077B55D /* FPSKeeper.cpp in Sources */,
 				AE191A8618EB8F260077B55D /* CollisionBox.cpp in Sources */,
 				AE7E324418BE406F00B2E3A9 /* Scene.cpp in Sources */,
 				AE191A8318EB8F060077B55D /* PhysicsBody.cpp in Sources */,
@@ -387,7 +411,10 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/lua",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				sd = "\\";
 			};
@@ -401,7 +428,10 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/lua",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				sd = "\\";
 			};

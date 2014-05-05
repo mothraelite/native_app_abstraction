@@ -32,7 +32,7 @@ void SceneManager::addScene(Scene *scene)
 {
     if(!current_scene)
         current_scene = scene;
-    
+
     scenes->push_back(scene);
 }
 
@@ -81,11 +81,11 @@ void getInput()
 }
 
 Scene* SceneManager::current_scene = NULL;
+
 void SceneManager::update()
 {
     if(SceneManager::current_scene)
         SceneManager::current_scene->update();
-    //std::this_thread::sleep_for(std::chrono::milliseconds(1));//desired_fps)); //set to 1000/fps when it's implemented
 }
 
 void SceneManager::render()//will be on main loop
@@ -96,12 +96,11 @@ void SceneManager::render()//will be on main loop
     glOrtho(0, screen_width, screen_height, 0, 0, 1.0f);
     glMatrixMode(GL_MODELVIEW);
     
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     //glClearColor(0.0, 0.0, 0.0, 0.0);
     
     if(current_scene)
         current_scene->render();
-    
     
     //get around v-sync issue
     std::this_thread::sleep_for(std::chrono::milliseconds(0));

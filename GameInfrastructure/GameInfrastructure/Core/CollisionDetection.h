@@ -46,6 +46,8 @@ public:
     
     float getX();
     float getY();
+    float getWidth();
+    float getHeight();
     float getArea();
     
 private:

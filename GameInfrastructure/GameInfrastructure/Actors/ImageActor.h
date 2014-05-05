@@ -33,6 +33,7 @@ public:
     float getAlpha();
     float getRotation();
     Texture* getTexture();
+    VBO* getVBO();
     
     virtual void render();
     
@@ -44,6 +45,8 @@ private:
     float rotation;
     float width, height;
     Texture* texture;
+    VBO* vbo;
+    
 
 };
 

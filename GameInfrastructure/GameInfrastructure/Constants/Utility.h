@@ -79,6 +79,7 @@ Texture* loadPngImage(char* name) {
     unsigned long row_bytes = png_get_rowbytes(png_ptr, info_ptr);
     
     Texture* texture = (Texture*)malloc(sizeof(Texture));
+    texture->id = -1;
     texture->width = width;
     texture->height = height;
     texture->data = (unsigned char*) malloc(row_bytes * height);

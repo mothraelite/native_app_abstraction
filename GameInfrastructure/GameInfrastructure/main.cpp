@@ -14,7 +14,6 @@
 #include <chrono>
 #include <thread>
 
-#include "Utility.h"
 #include "Actor.h"
 #include "ImageActor.h"
 #include "Scene.h"
@@ -22,6 +21,7 @@
 #include "Controller.h"
 #include "GameMath.h"
 #include "Definitions.h"
+#include "LuaImageActor.h"
 
 using namespace std;
 
@@ -44,7 +44,7 @@ void keyboard_handler(unsigned char character, int x, int y)
 {
     if(!manager)
         return;
-    
+
     //reset driver
     if(character == 'r')
     {
@@ -150,8 +150,48 @@ void renderScene()
     {
         manager->update();
         manager->render();
+    }else{
+        if(TESTING)
+        {
+            manager = new SceneManager();
+            Scene* s = new Scene();
+            
+            Texture* img = rmanager->getImageWithName("flowers");
+            for(int i = 0; i < 45; ++i)
+            {
+                ImageActor* temp = new ImageActor(img);
+                temp->setWidth(100);
+                temp->setHeight(80);
+                temp->setPosition(random()%400, random()%400);
+                
+                temp->depth = 1;
+                
+                //add objects to scene
+                s->addActor(temp);
+            }
+            
+            s->addActor(controlledActor);
+            
+            //setup manager!
+            manager->addScene(s);
+            
+            luaL_dofile(lua_state, "/Users/navidmilani/Desktop/native_app_abstraction/GameInfrastructure/helloworld.lua");
+            
+            //load up the global func
+            lua_getglobal(lua_state, "luastr");
+            
+            //arguements
+            //lua_pushstring(lua_state, "Hello from c to lua and back!\n");
+            
+            //call func: state, argument count, return count
+            lua_call(lua_state, 0, 0);
+            
+            //const char* str_from_lua = lua_tostring(lua_state, -1);
+            
+            //pop off stack
+            lua_pop(lua_state,1);
+        }
     }
-    
 }
 
 void idle()
@@ -160,41 +200,22 @@ void idle()
 }
 
 int main(int argc, char** argv) {
+    //init base code neccesities
+    rmanager = new ResourceManager();
+    
     //init LUA
     lua_state = luaL_newstate();
     luaL_openlibs(lua_state);
     
-    //load and compile and run the lua file!
-    while(true)
-    {
-        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-    luaL_dofile(lua_state, "/Users/navidmilani/Desktop/native_app_abstraction/GameInfrastructure/helloworld.lua");
-
-    //let's call its function :3
-        //load up the global func
-    lua_getglobal(lua_state, "luastr");
-    
-        //arguements
-    lua_pushstring(lua_state, "Hello from c to lua and back!\n");
-    
-        //call func: state, argument count, return count
-    lua_call(lua_state, 1, 1);
-    
-    const char* str_from_lua = lua_tostring(lua_state, -1);
-    
-        //pop off stack
-    lua_pop(lua_state,1);
-    
-    //print!
-    printf(str_from_lua);
-    }
+    //register our lua bindings
+    registerLuaImageActor(lua_state);
     
     //init RAND
     srand(time(0));
     
     // init GLUT and create Window
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
+	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA | GLUT_ALPHA);
 	glutInitWindowPosition(100,100);
 	glutInitWindowSize(screen_width, screen_height);
 	glutCreateWindow("DNP Game Engine");
@@ -207,19 +228,9 @@ int main(int argc, char** argv) {
     glEnable(GL_TEXTURE_2D);
     glShadeModel(GL_FLAT);
     
-	// register callbacks
-    glutMouseFunc(mouse_handler);
-    glutKeyboardFunc(keyboard_handler);
-	glutDisplayFunc(renderScene);
-    glutIdleFunc(idle);
+    controlledActor = new ImageActor(rmanager->getImageWithName("flowers"));
     
-    
-    // register singleton scene manager
-        //setup scene manager
-    manager = new SceneManager();
-    Scene* s = new Scene();
-    
-    ImageActor* actor = new ImageActor(loadPngImage("/Users/navidmilani/Desktop/png_file.png"));
+    ImageActor* actor = controlledActor;
     actor->appendFunctionToEvent("onUpdate", [&](){
         if(actor->getX() != mx || actor->getY() != my)
         {
@@ -246,70 +257,51 @@ int main(int argc, char** argv) {
     int mwidth = actor->getWidth();
     bool toggleSizeUp = true;
     actor->appendFunctionToEvent("onUpdate", [&](){
-            if(current_choice == 3)
+        if(current_choice == 3)
+        {
+            actor->setRotation(actor->getRotation()+5);
+            
+            if(toggleAlphaDown)
             {
-                actor->setRotation(actor->getRotation()+5);
-                
-                if(toggleAlphaDown)
-                {
-                    if(actor->getAlpha() > 0.05)
-                        actor->setAlpha(actor->getAlpha()-0.005);
-                    else
-                        toggleAlphaDown = false;
-                }else{
-                    if(actor->getAlpha() < 0.95)
-                        actor->setAlpha(actor->getAlpha()+0.005);
-                    else
-                        toggleAlphaDown = true;
-                }
-                
-                if(actor->getWidth() >= mwidth*2)
-                {
-                    toggleSizeUp = false;
-                }else if(actor->getWidth() <= mwidth)
-                {
-                    toggleSizeUp = true;
-                }
-                
-                if(toggleSizeUp)
-                {
-                    actor->setWidth(1+actor->getWidth());
-                    actor->setHeight(1+actor->getHeight());
-                }else{
-                    actor->setWidth(actor->getWidth()-1);
-                    actor->setHeight(actor->getHeight()-1);
-                }
-                
+                if(actor->getAlpha() > 0.05)
+                    actor->setAlpha(actor->getAlpha()-0.005);
+                else
+                    toggleAlphaDown = false;
+            }else{
+                if(actor->getAlpha() < 0.95)
+                    actor->setAlpha(actor->getAlpha()+0.005);
+                else
+                    toggleAlphaDown = true;
             }
+            
+            if(actor->getWidth() >= mwidth*2)
+            {
+                toggleSizeUp = false;
+            }else if(actor->getWidth() <= mwidth)
+            {
+                toggleSizeUp = true;
+            }
+            
+            if(toggleSizeUp)
+            {
+                actor->setWidth(1+actor->getWidth());
+                actor->setHeight(1+actor->getHeight());
+            }else{
+                actor->setWidth(actor->getWidth()-1);
+                actor->setHeight(actor->getHeight()-1);
+            }
+            
+        }
     });
     
-    controlledActor = actor;
     actor->depth = 2;
 
-    Texture* img = loadPngImage("/Users/navidmilani/Desktop/other_png.png");//loadPngImage("/Users/navidmilani/Desktop/other_png.png");
-    for(int i = 0; i < 1; ++i)
-    {
-        ImageActor* temp = new ImageActor(img);
-        temp->setWidth(100);
-        temp->setHeight(80);
-        temp->setPosition(random()%400, random()%400);
-        
-        temp->depth = 1;
-        
-        //add objects to scene
-        s->addActor(temp);
-    }
     
-    s->addActor(actor);
-    
-    ImageActor* bg = new ImageActor(loadPngImage("/Users/navidmilani/Desktop/test_notes.png"));
-    bg->setWidth(800);
-    bg->setHeight(600);
-    bg->depth = 100;
-    s->addActor(bg);
-    
-    //setup manager!
-    manager->addScene(s);
+	// register callbacks
+    glutMouseFunc(mouse_handler);
+    glutKeyboardFunc(keyboard_handler);
+	glutDisplayFunc(renderScene);
+    glutIdleFunc(idle);
     
 	// enter GLUT event processing cycle
 	glutMainLoop();

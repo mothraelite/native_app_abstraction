@@ -7,9 +7,15 @@
 
 
 #include "Scene.h"
+#include "FPSKeeper.h"
 
 Scene::Scene() {
     actors_present = new ia_map();
+    
+    if(TESTING)
+    {
+        addActor(new FPSKeeper());
+    }
 }
 
 Scene::~Scene() {
@@ -69,11 +75,13 @@ void Scene::removeActor(Actor* actor)
 
 void Scene::init()
 {
-
+    
 }
 
 void Scene::update()
 {
+    
+    
     //UPDATE ALL ACTORS!
     std::vector<Actor*>* tobe_readded = new std::vector<Actor*>();
     for(ia_map::iterator it = actors_present->begin(); it != actors_present->end(); ++it)

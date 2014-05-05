@@ -19,6 +19,11 @@
 #include <png.h>
 #include <iostream>
 #include <map>
+#include <vector>
+#include "Texture.h"
+
+typedef std::pair<std::string, Texture*> st_pair;
+typedef std::map<std::string, Texture*> st_map;
 
 class ResourceManager
 {
@@ -27,10 +32,13 @@ public:
     
     ResourceManager();
     void init();
-    GLubyte* getImageWithName(std::string name);
+    void putTexture(std::string, Texture* texture);
+    Texture* getImageWithName(std::string name);
+    
 protected:
 private:
-    std::map<std::string, GLubyte*> images;
+    std::map<std::string, Texture*>* images;
+    std::vector<Texture*>* current_textures;
 };
 
 #endif /* defined(__GameInfrastructure__ResourceManager__) */

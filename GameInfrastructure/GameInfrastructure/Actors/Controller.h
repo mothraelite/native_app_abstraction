@@ -14,13 +14,11 @@
 class Controller : public Actor{
 public:
     int id;
-    
     Controller();
     virtual ~Controller();
     virtual void init();
     virtual void behave(Actor* actor);
 private:
-
 };
 
 #endif	/* CONTROLLER_H */

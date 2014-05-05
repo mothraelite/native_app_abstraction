@@ -47,9 +47,6 @@ public:
     std::vector<Controller*>* getControllerList();
     void clearControllers();
     
-    void addDefinition(ApplyableSystem definition);
-    void removeDefinition(ApplyableSystem definition);
-    
     void setTimedEventWithCompletionBlock(std::string, int how_long, std::function<void(void)>);
     void removeTimedEventWithCompletionBlock(std::string);
     
