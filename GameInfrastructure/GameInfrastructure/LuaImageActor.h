@@ -26,22 +26,15 @@ static int createActor(lua_State *l)
     ImageActor** actor = (ImageActor**)lua_newuserdata(l, sizeof(ImageActor*));
     
     //create the c++ object
-    *actor = new ImageActor(rmanager->getImageWithName(img_name));
-    SceneManager::current_scene->addActor(*actor);
+    ImageActor* iactor = new ImageActor(rmanager->getImageWithName(img_name));
+    *actor = iactor;
     
+    SceneManager::current_scene->addActor(*actor);
     
     luaL_getmetatable(l, "LuaImageActor");
     lua_setmetatable(l, -2);
     
     return 1;
-}
-
-static int destroySprite(lua_State* L)
-{
-    //ImageActor* sprite = 0;
-    //luaL_checkudata(L, sprite,"LuaImageActor.base");
-    //sprite->release();
-    return 0;
 }
 
 static ImageActor* checkLuaImageActor(lua_State* l, int index)
@@ -62,7 +55,7 @@ static int setPosition(lua_State* l)
 static int setAlive(lua_State* l)
 {
     ImageActor* actor = checkLuaImageActor(l, 1);
-    actor->alive = luaL_checknumber(l, 1);
+    actor->alive = luaL_checkinteger(l, 2);
     return 0;
 }
 
@@ -151,6 +144,8 @@ static int setTimedEventWithCompletionBlock(lua_State* l)
         if ( 0 != lua_pcall(lua_state, 0, 0, 0 ) ) {
             printf("Failed to call the callback!\n %s\n", lua_tostring(lua_state, -1) );
         }
+        
+        luaL_unref(lua_state, LUA_REGISTRYINDEX, func_ref);
     });
     
     return 0;
@@ -181,7 +176,7 @@ static int appendFunctionToEvent(lua_State* l)
     return 0;
 }
 
-static int resetFunctionsFromEvent(lua_State* l)
+static int resetFunctionsListFromEvent(lua_State* l)
 {
     ImageActor* actor = checkLuaImageActor(l, 1);
     std::string event = luaL_checkstring(l, 2);
@@ -197,15 +192,52 @@ static int getName(lua_State* l)
     return 1;
 }
 
+static int setCanAutoMove(lua_State* l)
+{
+    ImageActor* actor = checkLuaImageActor(l, 1);
+    actor->canAutoMove = luaL_checkinteger(l, 2);
+    return 0;
+}
+
+static int setAsButton(lua_State* l)
+{
+    ImageActor* actor = checkLuaImageActor(l, 1);
+    actor->isButton = (bool)luaL_checkinteger(l, 2);
+    return 0;
+}
+
+static int setDestination(lua_State* l)
+{
+    ImageActor* actor = checkLuaImageActor(l, 1);
+    actor->dx = luaL_checknumber(l, 2);
+    actor->dy = luaL_checknumber(l, 3);
+    return 0;
+}
+
+static int getDestination(lua_State* l)
+{
+    ImageActor* actor = checkLuaImageActor(l, 1);
+    lua_pushnumber(l, actor->dx);
+    lua_pushnumber(l, actor->dy);
+    return 2;
+}
+
 static const luaL_Reg exposed_funcs[] = {
     // Creation
     {"new", createActor},
     
     {"getName", getName},
     
+    {"setAlive", setAlive},
+    
     {"getPosition", getPosition},
     {"setPosition", setPosition},
     
+    {"setAutoMove", setCanAutoMove},
+    {"setAsButton", setAsButton},
+    
+    {"setDestinationCoordinates",setDestination},
+    {"getDestinationCoordinates",getDestination},
     
     {"getRotation", getRotation},
     {"setRotation", setRotation},
@@ -219,7 +251,7 @@ static const luaL_Reg exposed_funcs[] = {
     
     {"setTimedEvent",setTimedEventWithCompletionBlock},
     {"appendFunctionToEvent",appendFunctionToEvent},
-    {"resetFunctionListForEvent", resetFunctionsFromEvent},
+    {"resetFunctionListForEvent", resetFunctionsListFromEvent},
     {NULL, NULL}
 };
 

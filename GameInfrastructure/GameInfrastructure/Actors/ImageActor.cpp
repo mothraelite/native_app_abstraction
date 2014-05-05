@@ -6,41 +6,19 @@
  */
 
 #include "ImageActor.h"
+#include "GameMath.h"
 
 ImageActor::ImageActor(Texture* texture) : Actor() {
     this->texture = texture;
-    //vbo = new VBO();
-    
-    //setup quad
-    /*Vertex temp[4];
-    
-    temp[0].x = width;
-    temp[0].y = height;
-    temp[0].s0 = 1.0;
-    temp[0].t0 = 1.0;
-    
-    temp[1].x = width;
-    temp[1].y = 0;
-    temp[1].s0 = 1.0;
-    temp[1].t0 = 0;
-    
-    temp[2].x = 0;
-    temp[2].y = 0;
-    temp[2].s0 = 0;
-    temp[2].t0 = 0;
-    
-    temp[3].x = 0;
-    temp[3].y = height;
-    temp[3].s0 = 0;
-    temp[3].t0 = 1.0;
-    
-    for(int i = 0; i < 4; i++)
-        vbo->vertices->push_back(temp[i]);
-    
-    vbo->generateVBO();*/
     
     x = 0;
     y = 0;
+    
+    dx = 0;
+    dy = 0;
+    
+    autoMoveSpeed = 3;
+    
     rotation = 0;
     
     alpha = 1;
@@ -56,14 +34,26 @@ ImageActor::ImageActor(Texture* texture) : Actor() {
         width = 200;
         height = 200;
     }
+    
+    hitbox = new CollisionDetection(width,height);
+    
     rotX = width/2;
     rotY = height/2;
     
     type = image_actor;
+    isButton = false;
+    canAutoMove = false;
+    
+    event_handlers->insert(event_pair("onPressed",0));
 }
 
 ImageActor::~ImageActor() {
-    
+    delete(hitbox);
+}
+
+void ImageActor::setAsButton(bool isButton)
+{
+    isButton = true;
 }
 
 float ImageActor::getX()
@@ -140,18 +130,54 @@ void ImageActor::setWidth(float _width)
 {
     width = _width;
     rotX = _width/2;
+    
+    hitbox->reinit(width, height);
 }
 
 void ImageActor::setHeight(float _height)
 {
     height = _height;
     rotY = _height/2;
+    
+    hitbox->reinit(width, height);
 }
 
 void ImageActor::resetSize()
 {
     setWidth(texture->width);
     setHeight(texture->height);
+}
+
+void ImageActor::update()
+{
+    Actor::update();
+    
+    hitbox->setPos(x, y);
+    
+    if(canAutoMove)
+    {
+        float distance = dist(getX(), getY(), dx, dy);
+        if(distance < .01)
+        {
+            dx = getX();
+            dy = getY();
+        }else{
+            float speed = distance;
+            if(speed > 5.5f)
+                speed = 5.5f;
+            
+            float angle = getAngleOnCircle(dx, dy, getX(), getY());
+            
+            Vector2D vect = getPointOnCircle(getX(), getY(), angle, autoMoveSpeed);
+            setPosition(vect.x, vect.y);
+        }
+    }
+    
+    if(isButton)
+    {
+        //check all mouse presses in queue
+        
+    }
 }
 
 void ImageActor::render()

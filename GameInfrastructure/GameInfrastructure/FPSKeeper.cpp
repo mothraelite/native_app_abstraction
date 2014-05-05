@@ -16,6 +16,7 @@
 
 FPSKeeper::FPSKeeper() : Actor()
 {
+    name = "FPS KEEPER";
     frame = 0;
     time = 0;
     timebase = 0;

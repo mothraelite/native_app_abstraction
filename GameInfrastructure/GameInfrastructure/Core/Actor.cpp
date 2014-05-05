@@ -57,6 +57,11 @@ void Actor::initEvents()
     event_handlers->insert(event_pair("beforeRender",0));
 }
 
+event_map* Actor::get_event_handlers()
+{
+    return event_handlers;
+}
+
 void Actor::setTimedEventWithCompletionBlock(std::string name, int how_long, std::function<void(void)> func)
 {
     //fire immediately

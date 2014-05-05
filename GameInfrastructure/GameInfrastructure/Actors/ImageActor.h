@@ -10,10 +10,16 @@
 
 #include "Actor.h"
 #include "Texture.h"
+#include "CollisionDetection.h"
 
 class ImageActor: public Actor {
 public:
     float red,green,blue;
+    bool isButton;
+    bool canAutoMove;
+    float dx,dy;
+    
+    CollisionDetection* hitbox;
     
     ImageActor(Texture* texture);
     virtual ~ImageActor();
@@ -33,19 +39,22 @@ public:
     float getAlpha();
     float getRotation();
     Texture* getTexture();
-    VBO* getVBO();
     
     virtual void render();
+    virtual void update();
     
     void resetSize();
+    
+    void setAsButton(bool isButton);
 private:
     float x,y;
+    float autoMoveSpeed;
     float rotX, rotY;
     float alpha;
     float rotation;
     float width, height;
     Texture* texture;
-    VBO* vbo;
+   
     
 
 };

@@ -54,6 +54,8 @@ public:
     std::vector<std::function<void (void)> >* getFunctionListForEvent(std::string);
     void resetFunctionsFromEvent(std::string event);
     
+    event_map* get_event_handlers();
+    
     ObjectType getType();
     
     virtual void update();

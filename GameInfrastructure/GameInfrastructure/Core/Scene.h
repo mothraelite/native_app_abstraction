@@ -30,7 +30,7 @@ public:
     void addActor(Actor* actor);
     void removeActorAtIndex(int index);
     void removeActor(Actor* actor);
-    ia_map getCurrentActors;
+    ia_map* getActors();
 
     void init();
     void update();

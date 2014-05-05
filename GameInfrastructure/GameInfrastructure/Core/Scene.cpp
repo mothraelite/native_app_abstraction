@@ -34,7 +34,7 @@ void Scene::addActor(Actor* actor)
 {
     if(!actor)
         return;
-    
+ 
     //call actor event
     std::vector<std::function<void(void)> >* on_add_handlers = actor->getFunctionListForEvent("onAddedToScene");
     if(on_add_handlers)
@@ -80,8 +80,6 @@ void Scene::init()
 
 void Scene::update()
 {
-    
-    
     //UPDATE ALL ACTORS!
     std::vector<Actor*>* tobe_readded = new std::vector<Actor*>();
     for(ia_map::iterator it = actors_present->begin(); it != actors_present->end(); ++it)
@@ -114,6 +112,11 @@ void Scene::update()
     delete(tobe_readded);
     
     //should we remove depths with no objects? if so make a list at the top, fill it up during update step, then delet them here
+}
+
+ia_map* Scene::getActors()
+{
+    return actors_present;
 }
 
 void Scene::render()

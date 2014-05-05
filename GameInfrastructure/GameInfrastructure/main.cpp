@@ -19,127 +19,92 @@
 #include "Scene.h"
 #include "SceneManager.h"
 #include "Controller.h"
-#include "GameMath.h"
 #include "Definitions.h"
 #include "LuaImageActor.h"
 
 using namespace std;
 
 SceneManager* manager;
-ImageActor* controlledActor;
 
-int current_choice = 0;
-float mx=0, my=0;
-void mouse_handler(int button, int state,int x, int y)
+
+void mouse_pressed(int button, int state, int x, int y)
 {
-    if(current_choice == 4)
+    if(state == GLUT_UP)
     {
-        mx = x;
-        my = y;
+        for(int i = 0; i < mouse_actions->size(); ++i)
+        {
+            //already contains an instance of char
+            if(mouse_actions->at(i).button == button)
+            {
+                //check if there was a button pressed...
+                if(manager)
+                    if(manager->current_scene)
+                    {
+                        ia_map* actors = manager->current_scene->getActors();
+                        for(ia_map::iterator it = actors->begin(); it != actors->end(); ++it)
+                        {
+                            for(register int j = 0; j < it->second->size(); ++j)
+                            {
+                                Actor* actor = it->second->at(j);
+                                if(actor->getType() == image_actor)
+                                {
+                                    ImageActor* iactor = (ImageActor*)actor;
+                                    
+                                    //was this button pressed?
+                                    if(iactor->hitbox->containsPoint(x, y))
+                                    {
+                                        if(iactor->isButton)
+                                        {
+                                            auto event_iterator = iactor->get_event_handlers()->find("onPressed");
+                                            if(event_iterator != iactor->get_event_handlers()->end())
+                                                if(event_iterator->second)
+                                                {
+                                                    //iterate through list of functions to call on this event
+                                                    for(int k = 0; k < event_iterator->second->size(); k++)
+                                                    {
+                                                        event_iterator->second->at(k)();
+                                                    }
+                                                }
+
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                
+                mouse_actions->erase(mouse_actions->begin()+i);
+                break;
+            }
+        }
+    }else{
+        mouse_action action = { button, x, y };
+        mouse_actions->push_back(action);
     }
 }
 
-
-void keyboard_handler(unsigned char character, int x, int y)
+void key_pressed(unsigned char character, int x, int y)
 {
-    if(!manager)
-        return;
-
-    //reset driver
-    if(character == 'r')
+    for(int i = 0; i < buttons_down->size(); ++i)
     {
-        //reset position
-        mx = 0;
-        my = 0;
-        
-        controlledActor->setAlpha(1);
-        controlledActor->setRotation(0);
-        controlledActor->resetSize();
-        
-        //reset choice
-        current_choice = 0;
-    }
-    
-    //set test depth
-    else if(character == '1')
-    {
-        current_choice = 1;
-        
-        controlledActor->setAlpha(1);
-        controlledActor->setRotation(0);
-        controlledActor->resetSize();
-        
-        mx = 200;
-        my = 0;
-    }
-    
-    //set test keyboard
-    else if(character == '2')
-    {
-        current_choice = 2;
-        
-        controlledActor->setAlpha(1);
-        controlledActor->setRotation(0);
-        controlledActor->resetSize();
-        
-        mx = 400;
-        my = 0;
-    }
-    
-    //set test color/rotation
-    else if(character == '3')
-    {
-        current_choice = 3;
-        
-        controlledActor->setAlpha(1);
-        controlledActor->setRotation(0);
-        
-        mx = 200;
-        my = 200;
-    }
-    
-    //set test flags(mouse input)
-    else if(character == '4')
-    {
-        current_choice = 4; //not working
-        
-        controlledActor->setAlpha(1);
-        controlledActor->setRotation(0);
-        
-        mx = 0;
-        my = 0;
-    }
-    
-    //behavior on click
-    if(current_choice == 1)
-    {
-        if(character == 'w')
+        //already contains an instance of char
+        if(buttons_down->at(i) == character)
         {
-            
-            if(controlledActor)
-            {
-                controlledActor->depth = 2;
-            }
-        }else if(character == 's')
-        {
-            if(controlledActor)
-            {
-                controlledActor->depth = 0;
-            }
+            return;
         }
     }
-    
-    if(current_choice == 2)
+    buttons_down->push_back(character);
+}
+
+void key_up(unsigned char character, int x, int y)
+{
+    for(int i = 0; i < buttons_down->size(); ++i)
     {
-        if(character == 'd')
+        if(buttons_down->at(i) == character)
         {
-            mx += 100;
-        }else if(character == 'a'){
-            mx -= 100;
-        }else if(character == 'w'){
-            my -= 100;
-        }else if(character == 's'){
-            my += 100;
+            buttons_down->erase(buttons_down->begin()+i--);
+            break;
         }
     }
 }
@@ -156,29 +121,16 @@ void renderScene()
             manager = new SceneManager();
             Scene* s = new Scene();
             
-            Texture* img = rmanager->getImageWithName("flowers");
-            for(int i = 0; i < 45; ++i)
-            {
-                ImageActor* temp = new ImageActor(img);
-                temp->setWidth(100);
-                temp->setHeight(80);
-                temp->setPosition(random()%400, random()%400);
-                
-                temp->depth = 1;
-                
-                //add objects to scene
-                s->addActor(temp);
-            }
-            
-            s->addActor(controlledActor);
-            
             //setup manager!
             manager->addScene(s);
             
-            luaL_dofile(lua_state, "/Users/navidmilani/Desktop/native_app_abstraction/GameInfrastructure/helloworld.lua");
+            //setup scene!
+            luaL_dofile(lua_state, "/Users/navidmilani/Desktop/native_app_abstraction/GameInfrastructure/main.lua");
+            
+            
             
             //load up the global func
-            lua_getglobal(lua_state, "luastr");
+            lua_getglobal(lua_state, "init");
             
             //arguements
             //lua_pushstring(lua_state, "Hello from c to lua and back!\n");
@@ -228,78 +180,10 @@ int main(int argc, char** argv) {
     glEnable(GL_TEXTURE_2D);
     glShadeModel(GL_FLAT);
     
-    controlledActor = new ImageActor(rmanager->getImageWithName("flowers"));
-    
-    ImageActor* actor = controlledActor;
-    actor->appendFunctionToEvent("onUpdate", [&](){
-        if(actor->getX() != mx || actor->getY() != my)
-        {
-            float distance = dist(actor->getX(), actor->getY(), mx, my);
-            if(distance < .001)
-            {
-                actor->setPosition(mx,my);
-                mx = actor->getX();
-                my = actor->getY();
-            }else{
-                float speed = distance;
-                if(speed > 5.5f)
-                    speed = 5.5f;
-                
-                float angle = getAngleOnCircle(mx, my,actor->getX(), actor->getY());
-                
-                Vector2D vect = getPointOnCircle(actor->getX(), actor->getY(), angle, speed);
-                actor->setPosition(vect.x, vect.y);
-            }
-        }
-    });
-    
-    bool toggleAlphaDown = true;
-    int mwidth = actor->getWidth();
-    bool toggleSizeUp = true;
-    actor->appendFunctionToEvent("onUpdate", [&](){
-        if(current_choice == 3)
-        {
-            actor->setRotation(actor->getRotation()+5);
-            
-            if(toggleAlphaDown)
-            {
-                if(actor->getAlpha() > 0.05)
-                    actor->setAlpha(actor->getAlpha()-0.005);
-                else
-                    toggleAlphaDown = false;
-            }else{
-                if(actor->getAlpha() < 0.95)
-                    actor->setAlpha(actor->getAlpha()+0.005);
-                else
-                    toggleAlphaDown = true;
-            }
-            
-            if(actor->getWidth() >= mwidth*2)
-            {
-                toggleSizeUp = false;
-            }else if(actor->getWidth() <= mwidth)
-            {
-                toggleSizeUp = true;
-            }
-            
-            if(toggleSizeUp)
-            {
-                actor->setWidth(1+actor->getWidth());
-                actor->setHeight(1+actor->getHeight());
-            }else{
-                actor->setWidth(actor->getWidth()-1);
-                actor->setHeight(actor->getHeight()-1);
-            }
-            
-        }
-    });
-    
-    actor->depth = 2;
-
-    
 	// register callbacks
-    glutMouseFunc(mouse_handler);
-    glutKeyboardFunc(keyboard_handler);
+    glutMouseFunc(mouse_pressed);
+    glutKeyboardFunc(key_pressed);
+    glutKeyboardUpFunc(key_up);
 	glutDisplayFunc(renderScene);
     glutIdleFunc(idle);
     

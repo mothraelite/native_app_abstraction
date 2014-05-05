@@ -24,10 +24,19 @@ enum ObjectType
     controller,
     image_actor
 };
+struct mouse_action
+{
+    int button;
+    int x;
+    int y;
+};
 
 static lua_State* lua_state;
 
 static ResourceManager* rmanager;
+static std::vector<int>* buttons_down = new std::vector<int>();
+static std::vector<mouse_action>* mouse_actions = new std::vector<mouse_action>();
+
 
 static int screen_width = 800;
 static int screen_height = 600;
