@@ -54,8 +54,6 @@ private:
     float rotation;
     float width, height;
     Texture* texture;
-   
-    
 
 };
 

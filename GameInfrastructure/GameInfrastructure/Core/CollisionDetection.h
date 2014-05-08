@@ -43,6 +43,7 @@ public:
     bool intersects(CollisionDetection* cd);
     
     bool containsPoint(float x, float y);
+    bool containsPointRelativeToCamera(float x, float y);
     
     float getX();
     float getY();

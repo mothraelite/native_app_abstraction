@@ -21,6 +21,7 @@
 #include "Controller.h"
 #include "Definitions.h"
 #include "LuaImageActor.h"
+#include "LuaCameraInterface.h"
 
 using namespace std;
 
@@ -51,7 +52,7 @@ void mouse_pressed(int button, int state, int x, int y)
                                     ImageActor* iactor = (ImageActor*)actor;
                                     
                                     //was this button pressed?
-                                    if(iactor->hitbox->containsPoint(x, y))
+                                    if(iactor->hitbox->containsPointRelativeToCamera(x, y))
                                     {
                                         if(iactor->isButton)
                                         {
@@ -79,7 +80,7 @@ void mouse_pressed(int button, int state, int x, int y)
             }
         }
     }else{
-        mouse_action action = { button, x, y };
+        mouse_action action = { button, static_cast<int>(x+camera->getX()), static_cast<int>(y+camera->getY())};
         mouse_actions->push_back(action);
     }
 }
@@ -153,16 +154,13 @@ void idle()
     glutPostRedisplay();
 }
 
-int main(int argc, char** argv) {
-    //init base code neccesities
-    rmanager = new ResourceManager();
-    
+int main(int argc, char** argv) {    
     //init LUA
-    lua_state = luaL_newstate();
     luaL_openlibs(lua_state);
     
     //register our lua bindings
     registerLuaImageActor(lua_state);
+    registerLuaCamera(lua_state);
     
     //init RAND
     srand(time(0));

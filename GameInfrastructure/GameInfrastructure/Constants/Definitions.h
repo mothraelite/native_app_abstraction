@@ -10,6 +10,7 @@
 
 #import <thread>
 #import "ResourceManager.h"
+#import "Camera.h"
 
 #define LUA_COMPAT_ALL
 extern "C"
@@ -31,12 +32,12 @@ struct mouse_action
     int y;
 };
 
-static lua_State* lua_state;
+extern lua_State* lua_state;
 
-static ResourceManager* rmanager;
-static std::vector<int>* buttons_down = new std::vector<int>();
-static std::vector<mouse_action>* mouse_actions = new std::vector<mouse_action>();
-
+extern ResourceManager* rmanager;
+extern std::vector<int>* buttons_down;
+extern std::vector<mouse_action>* mouse_actions;
+extern Camera* camera;
 
 static int screen_width = 800;
 static int screen_height = 600;

@@ -94,7 +94,17 @@ void SceneManager::render()//will be on main loop
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(0, screen_width, screen_height, 0, 0, 1.0f);
+    
+    if(camera)
+    {
+        glTranslatef(camera->getX()+screen_width/2, camera->getY()+screen_height/2, 0.0);
+        glRotatef(camera->getRotation(), 0.0, 0.0, 1.0);
+        glTranslatef(-screen_width/2, -screen_height/2, 0);
+    }
+    
     glMatrixMode(GL_MODELVIEW);
+    
+    
     
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     //glClearColor(0.0, 0.0, 0.0, 0.0);

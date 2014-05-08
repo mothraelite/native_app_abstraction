@@ -126,8 +126,7 @@ void Scene::render()
         for(register int i = 0; i < it->second->size(); ++i)
         {
             Actor* actor = it->second->at(i);
-            if(actor->getType() == image_actor)
-                actor->render();
+            actor->render();
         }
     }
 }

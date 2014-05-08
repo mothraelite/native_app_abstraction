@@ -1,6 +1,13 @@
+
 update = 
 function()
-
+	local rot = LuaCameraInterface.getRotation()
+	rot = rot - 1
+	--LuaCameraInterface.setRotation(rot)
+	
+	local x,y = LuaCameraInterface.getPosition()
+	x  = x - 1
+	--LuaCameraInterface.setPosition(x,y)
 end
 
 render = 
@@ -35,17 +42,13 @@ function()
 	local temp = LuaImageActor.new("wall")
 	temp:setPosition(0,50)
 	temp:setSize(256,400)
-
+	
 	local temp = LuaImageActor.new("wall")
 	temp:setPosition(251,50)
 	temp:setSize(256,400)
 	
 	local temp = LuaImageActor.new("wall")
 	temp:setPosition(502,50)
-	temp:setSize(256,400)
-	
-	local temp = LuaImageActor.new("wall")
-	temp:setPosition(753,50)
 	temp:setSize(256,400)
 	
 	local temp = LuaImageActor.new("logo")
@@ -69,15 +72,15 @@ function()
 		end
 	)
 	
-	
 	--cuts frames in half
 	local temp = LuaImageActor.new("haze")
+	temp:setDepth(100)
 	temp:setSize(800,600)
 end
 
 start_pressed
 =
 function()
-	local rot = sbutton:getRotation()-1;
+	local rot = sbutton:getRotation()+5;
 	sbutton:setRotation(rot) 
 end

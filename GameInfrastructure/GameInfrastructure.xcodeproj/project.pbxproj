@@ -12,6 +12,8 @@
 		AE191A8618EB8F260077B55D /* CollisionBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE191A8418EB8F260077B55D /* CollisionBox.cpp */; };
 		AE191A8A18EDC7460077B55D /* CollisionDetection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE191A8818EDC7460077B55D /* CollisionDetection.cpp */; };
 		AE191A9B18F3BE760077B55D /* FPSKeeper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE191A9918F3BE760077B55D /* FPSKeeper.cpp */; };
+		AE2AF38A191ADC6A00E90997 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE2AF388191ADC6A00E90997 /* Camera.cpp */; };
+		AE2AF38E191BF4A300E90997 /* Definitions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE2AF38D191BF4A300E90997 /* Definitions.cpp */; };
 		AE7E322618BE3F2E00B2E3A9 /* GameInfrastructure.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = AE7E322518BE3F2E00B2E3A9 /* GameInfrastructure.1 */; };
 		AE7E322D18BE3F4300B2E3A9 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE7E322C18BE3F4300B2E3A9 /* GLUT.framework */; };
 		AE7E322F18BE3F5C00B2E3A9 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE7E322E18BE3F5C00B2E3A9 /* OpenGL.framework */; };
@@ -52,6 +54,10 @@
 		AE191A8D18F249AD0077B55D /* liblua52.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liblua52.dylib; path = lua/liblua52.dylib; sourceTree = "<group>"; };
 		AE191A9918F3BE760077B55D /* FPSKeeper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FPSKeeper.cpp; sourceTree = "<group>"; };
 		AE191A9A18F3BE760077B55D /* FPSKeeper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPSKeeper.h; sourceTree = "<group>"; };
+		AE2AF388191ADC6A00E90997 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		AE2AF389191ADC6A00E90997 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
+		AE2AF38C191BE03700E90997 /* LuaCameraInterface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LuaCameraInterface.h; sourceTree = "<group>"; };
+		AE2AF38D191BF4A300E90997 /* Definitions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Definitions.cpp; sourceTree = "<group>"; };
 		AE317B32190EFC7500B06286 /* LuaImageActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LuaImageActor.h; sourceTree = "<group>"; };
 		AE317B3A1917D9C900B06286 /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
 		AE6D672F18DA187600CB99BB /* GameMath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameMath.h; sourceTree = "<group>"; };
@@ -63,7 +69,7 @@
 		AE7E323318BE406F00B2E3A9 /* Controller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Controller.cpp; sourceTree = "<group>"; };
 		AE7E323418BE406F00B2E3A9 /* Controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Controller.h; sourceTree = "<group>"; };
 		AE7E323518BE406F00B2E3A9 /* ImageActor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImageActor.cpp; sourceTree = "<group>"; };
-		AE7E323618BE406F00B2E3A9 /* ImageActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageActor.h; sourceTree = "<group>"; };
+		AE7E323618BE406F00B2E3A9 /* ImageActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageActor.h; path = ../Actors/ImageActor.h; sourceTree = "<group>"; };
 		AE7E323818BE406F00B2E3A9 /* Definitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Definitions.h; sourceTree = "<group>"; };
 		AE7E323A18BE406F00B2E3A9 /* Actor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Actor.cpp; sourceTree = "<group>"; };
 		AE7E323B18BE406F00B2E3A9 /* Actor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Actor.h; sourceTree = "<group>"; };
@@ -120,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				AE191A8818EDC7460077B55D /* CollisionDetection.cpp */,
+				AE7E323618BE406F00B2E3A9 /* ImageActor.h */,
 				AE191A8918EDC7460077B55D /* CollisionDetection.h */,
 			);
 			name = CollisionDetection;
@@ -128,6 +135,8 @@
 		AE191A9718F3444C0077B55D /* GameActors */ = {
 			isa = PBXGroup;
 			children = (
+				AE2AF388191ADC6A00E90997 /* Camera.cpp */,
+				AE2AF389191ADC6A00E90997 /* Camera.h */,
 			);
 			name = GameActors;
 			sourceTree = "<group>";
@@ -136,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				AE317B32190EFC7500B06286 /* LuaImageActor.h */,
+				AE2AF38C191BE03700E90997 /* LuaCameraInterface.h */,
 			);
 			name = LuaActorWrappers;
 			sourceTree = "<group>";
@@ -195,7 +205,6 @@
 				AE7E323318BE406F00B2E3A9 /* Controller.cpp */,
 				AE7E323418BE406F00B2E3A9 /* Controller.h */,
 				AE7E323518BE406F00B2E3A9 /* ImageActor.cpp */,
-				AE7E323618BE406F00B2E3A9 /* ImageActor.h */,
 			);
 			path = Actors;
 			sourceTree = "<group>";
@@ -203,6 +212,7 @@
 		AE7E323718BE406F00B2E3A9 /* Singeltons */ = {
 			isa = PBXGroup;
 			children = (
+				AE2AF38D191BF4A300E90997 /* Definitions.cpp */,
 				AE7E323818BE406F00B2E3A9 /* Definitions.h */,
 				AE0C04E018D685B5008B6A43 /* Utility.h */,
 				AE0C04E318D7455C008B6A43 /* ResourceManager.cpp */,
@@ -290,12 +300,14 @@
 				AE191A8618EB8F260077B55D /* CollisionBox.cpp in Sources */,
 				AE7E324418BE406F00B2E3A9 /* Scene.cpp in Sources */,
 				AE191A8318EB8F060077B55D /* PhysicsBody.cpp in Sources */,
+				AE2AF38A191ADC6A00E90997 /* Camera.cpp in Sources */,
 				AE7E324318BE406F00B2E3A9 /* Actor.cpp in Sources */,
 				AE191A8A18EDC7460077B55D /* CollisionDetection.cpp in Sources */,
 				AE7E324618BE406F00B2E3A9 /* main.cpp in Sources */,
 				AE7E324118BE406F00B2E3A9 /* Controller.cpp in Sources */,
 				AE7E324218BE406F00B2E3A9 /* ImageActor.cpp in Sources */,
 				AE7E324518BE406F00B2E3A9 /* SceneManager.cpp in Sources */,
+				AE2AF38E191BF4A300E90997 /* Definitions.cpp in Sources */,
 				AE0C04E518D7455C008B6A43 /* ResourceManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -7,6 +7,7 @@
 //
 
 #include "CollisionDetection.h"
+#include "Definitions.h"
 
 CollisionDetection::CollisionDetection(float _w,float _h)
 {
@@ -32,6 +33,25 @@ bool CollisionDetection::containsPoint(float _x, float _y)
     left = this->x;
     right = left + width;
     up = this->y;
+    down = up + height;
+    px = _x;
+    py = _y;
+    
+    return
+    (
+     px >= left &&
+     px <= right &&
+     py >= up &&
+     py <= down
+     );
+}
+
+bool CollisionDetection::containsPointRelativeToCamera(float _x, float _y)
+{
+    float left,right,down,up,px,py;
+    left = this->x+camera->getX();
+    right = left + width;
+    up = this->y+camera->getY();
     down = up + height;
     px = _x;
     py = _y;
