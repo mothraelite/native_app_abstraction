@@ -3,11 +3,14 @@ update =
 function()
 	local rot = LuaCameraInterface.getRotation()
 	rot = rot - 1
-	--LuaCameraInterface.setRotation(rot)
+	LuaCameraInterface.setRotation(rot)
 	
 	local x,y = LuaCameraInterface.getPosition()
-	x  = x - 1
-	--LuaCameraInterface.setPosition(x,y)
+	x  = x + 20
+	LuaCameraInterface.setPosition(x,y)
+	
+	--LuaCameraInterface.setRotation(0);
+	--LuaCameraInterface.setPosition(0,0);
 end
 
 render = 
